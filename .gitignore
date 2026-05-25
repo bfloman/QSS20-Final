@@ -1,0 +1,4 @@
+output/panel_cache.parquet
+__pycache__/
+*.pyc
+.DS_Store
