@@ -10,11 +10,11 @@ Does the *size* of a Democratic legislative majority — not just its direction 
 ## Repository Structure
 
 ```
-QSSFINAL/
+QSS20-Final/
 ├── code/
 │   ├── analysis.py              # Main pipeline — builds panel, runs regressions, generates figs 1–3
 │   ├── extensions.py            # Five extension analyses — event study, RD, waivers, bicameral, unified gov
-│   └── additional_analyses.py   # Effect size translation + placebo tests (figs 9, table 3)
+│   └── additional_analyses.py   # Effect size translation + placebo tests (fig 9, table 3)
 │
 ├── data/
 │   ├── raw_data__2_.csv         # KFF monthly Medicaid/CHIP enrollment (Jan 2014–Jan 2026)
@@ -41,32 +41,35 @@ QSSFINAL/
 │   ├── fig8_unified_gov.png
 │   ├── fig9_placebo.png
 │   ├── descriptive_stats.csv
-│   ├── regression_results.csv
-│   └── panel_cache.parquet      # Cached panel (auto-rebuilt if deleted)
+│   └── regression_results.csv
+│
+└── README.md
 ```
 
 ---
 
 ## How to Run
 
+Scripts expect to be run from the repo root. Data is read from `data/` and output is written to `output/`.
+
 ```bash
-cd /path/to/QSSFINAL
+cd QSS20-Final
 
 # Main analysis (builds panel, figs 1–3, regression table)
-python analysis.py
+python code/analysis.py
 
 # Extension analyses (figs 4–8)
-python extensions.py
+python code/extensions.py
 
 # Effect size + placebo tests (fig 9, table 3)
-python additional_analyses.py
+python code/additional_analyses.py
 
 # Run a single extension
-python extensions.py --only waiver
-python extensions.py --only bicameral event_study
+python code/extensions.py --only waiver
+python code/extensions.py --only bicameral event_study
 
 # Force panel rebuild (e.g. after updating data files)
-python analysis.py --rebuild-panel
+python code/analysis.py --rebuild-panel
 ```
 
 Output goes to `output/`. The panel is cached to `output/panel_cache.parquet` — delete it to force a rebuild.
@@ -104,7 +107,7 @@ Output goes to `output/`. The panel is cached to `output/panel_cache.parquet` �
 
 - The `load_eligible_population()` function automatically detects whether `acs_eligible_pop.csv` is multi-year (preferred) or single-year (fallback) format and handles both.
 - Regressions use `statsmodels` OLS with state and year dummy variables and clustered standard errors. The `linearmodels` package is not required.
-- The panel cache (`output/panel_cache.parquet`) speeds up repeated runs. It is invalidated automatically when source data changes, or manually by deleting it.
+- The panel cache (`output/panel_cache.parquet`) speeds up repeated runs. Delete it to force a full rebuild from source files.
 - 133 state-month observations use `state_population.csv` as the denominator fallback (states with missing ACS coverage in a given year). These are flagged in the build log.
 
 ---
