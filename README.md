@@ -11,9 +11,10 @@ Does the *size* of a Democratic legislative majority — not just its direction 
 
 ```
 QSSFINAL/
-├── analysis.py              # Main pipeline — builds panel, runs regressions, generates figs 1–3
-├── extensions.py            # Five extension analyses — event study, RD, waivers, bicameral, unified gov
-├── additional_analyses.py   # Effect size translation + placebo tests (figs 9, table 3)
+├── code/
+│   ├── analysis.py              # Main pipeline — builds panel, runs regressions, generates figs 1–3
+│   ├── extensions.py            # Five extension analyses — event study, RD, waivers, bicameral, unified gov
+│   └── additional_analyses.py   # Effect size translation + placebo tests (figs 9, table 3)
 │
 ├── data/
 │   ├── raw_data__2_.csv         # KFF monthly Medicaid/CHIP enrollment (Jan 2014–Jan 2026)
