@@ -1,5 +1,0 @@
-Model,margin_coef,margin_se,margin_p,margin_ci_lo,margin_ci_hi,dem_control_coef,dem_control_se,dem_control_p,dem_control_ci_lo,dem_control_ci_hi,post_expansion_coef,post_expansion_se,post_expansion_p,post_expansion_ci_lo,post_expansion_ci_hi,mood_coef,mood_se,mood_p,mood_ci_lo,mood_ci_hi,covid_period_coef,covid_period_se,covid_period_p,covid_period_ci_lo,covid_period_ci_hi,N,R2
-(1) Full sample,80.8526,31.5331,0.0103,19.0477,142.6575,-1.9034,3.6473,0.6018,-9.0521,5.2454,11.4154,4.1788,0.0063,3.2248,19.6059,21.6299,119.289,0.8561,-212.1766,255.4364,8.6937,1.1101,0.0,6.5179,10.8695,4118,0.9567
-(2) Excl. COVID,86.8501,35.787,0.0152,16.7076,156.9926,-5.4944,3.8198,0.1503,-12.9811,1.9924,8.3361,5.341,0.1186,-2.1323,18.8045,15.58,126.9982,0.9024,-233.3364,264.4964,,,,,,3114,0.9507
-(3) Expansion states,93.9507,25.6145,0.0002,43.7463,144.1551,-12.4513,2.732,0.0,-17.806,-7.0966,,,,,,191.6928,121.1178,0.1135,-45.6981,429.0837,10.2188,1.7037,0.0,6.8795,13.5581,2485,0.9458
-"(4) Exp., excl. COVID",116.3946,27.2248,0.0,63.0341,169.7552,-16.072,2.9614,0.0,-21.8763,-10.2677,,,,,,275.6111,129.1208,0.0328,22.5344,528.6878,,,,,,1839,0.9467
