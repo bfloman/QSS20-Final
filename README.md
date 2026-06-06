@@ -1,143 +1,79 @@
-# Legislative Majority Size and Medicaid Enrollment
-### Ben Floman | QSS 20 | Dartmouth College | May 2026
+# Direction Without Degree: Party Control, Majority Size, and Medicaid Restriction
 
-Does the *size* of a Democratic legislative majority — not just its direction — independently predict how generously states implement Medicaid? This repository contains all data, code, and output for the paper testing that question using a state-by-month panel from 2015–2026.
+Replication repository for the QSS final project. The analysis asks whether the
+*size* of a legislative majority (a "dial") shapes Medicaid restriction beyond
+the binary fact of which party is in control (a "switch"), using a monthly panel
+of 49 states, 2015–2026.
 
-**Finding:** Democratic lower chamber seat margin is positive and significant across all four main specifications (p = 0.010 to p < 0.001), with an expansion-states estimate of 93.9 pp per unit of seat share. A one-IQR shift in margin predicts approximately 233,000 additional enrollees in a median-sized state.
-
----
-
-## Repository Structure
+## Repository structure
 
 ```
 QSS20-Final/
+├── README.md
+├── requirements.txt
 ├── code/
-│   ├── analysis.py              # Main pipeline — builds panel, runs regressions, generates figs 1–3
-│   ├── extensions.py            # Five extension analyses — event study, RD, waivers, bicameral, unified gov
-│   └── additional_analyses.py   # Effect size translation + placebo tests (fig 9, table 3)
-│
+│   ├── utils.py             # shared functions (imported by the numbered scripts)
+│   ├── 00_build.py          # clean + merge raw sources -> processed panel
+│   ├── 01_analysis.py       # two-way fixed-effects estimates + placebos
+│   ├── 02_extensions.py     # restriction classification (tree / LOSO CV / L1)
+│   └── 03_make_figures.py   # generate the four manuscript figures
 ├── data/
-│   ├── raw_data__2_.csv         # KFF monthly Medicaid/CHIP enrollment (Jan 2014–Jan 2026)
-│   ├── acs_eligible_pop.csv     # ACS C17002 population below 138% FPL, annual 2014–2023
-│   ├── ncsl_lower.csv           # NCSL lower chamber seat counts, 5 session snapshots
-│   ├── ncsl_upper.csv           # NCSL upper chamber seat counts, 5 session snapshots
-│   ├── expansion_dates.csv      # Medicaid expansion status and adoption dates by state
-│   ├── state_population.csv     # 2022 Census state population estimates (fallback denominator)
-│   ├── presidential_vote.csv    # Democratic two-party presidential vote share by state, 2012–2024
-│   ├── governor_party.csv       # Governor party (D/R) at each NCSL session snapshot
-│   └── restrictive_waivers.csv  # State-years with active restrictive Medicaid waivers
-│
-├── output/
-│   ├── floman_medicaid_margin.pdf   # Compiled paper
-│   ├── floman_medicaid_margin.tex   # LaTeX source
-│   ├── references.bib               # BibTeX references
-│   ├── fig1_enrollment_by_cohort.png
-│   ├── fig2_margin_scatter.png
-│   ├── fig3_flipped_states.png
-│   ├── fig4_event_study.png
-│   ├── fig5_supermajority_rd.png
-│   ├── fig6_waiver_by_margin.png
-│   ├── fig7_bicameral.png
-│   ├── fig8_unified_gov.png
-│   ├── fig9_placebo.png
-│   ├── descriptive_stats.csv
-│   └── regression_results.csv
-│
-└── README.md
+│   ├── raw/                 # the nine public source files (see Data sources)
+│   └── processed/           # built by 00_build.py (medicaid_panel.csv, ...)
+├── output/                  # figure PNGs, built by 03_make_figures.py
+└── paper/
+    └── floman_medicaid.tex  # manuscript (PNAS template)
 ```
 
----
-
-## How to Run
-
-Scripts expect to be run from the repo root. Data is read from `data/` and output is written to `output/`.
+## Quickstart
 
 ```bash
-cd QSS20-Final
-
-# Main analysis (builds panel, figs 1–3, regression table)
-python code/analysis.py
-
-# Extension analyses (figs 4–8)
-python code/extensions.py
-
-# Effect size + placebo tests (fig 9, table 3)
-python code/additional_analyses.py
-
-# Run a single extension
-python code/extensions.py --only waiver
-python code/extensions.py --only bicameral event_study
-
-# Force panel rebuild (e.g. after updating data files)
-python code/analysis.py --rebuild-panel
+pip install -r requirements.txt
+cd code
+python 00_build.py          # writes data/processed/*.csv
+python 01_analysis.py       # prints panel estimates + placebos
+python 02_extensions.py     # prints restriction-classification diagnostics
+python 03_make_figures.py   # writes output/*.png
 ```
 
-Output goes to `output/`. The panel is cached to `output/panel_cache.parquet` — delete it to force a rebuild.
+Run the scripts in numeric order; each later script reads what `00_build.py`
+writes. Paths are resolved relative to the repository root, so no paths need to
+be edited after cloning.
 
----
+## Scripts
 
-## Data Sources
+| Script | Input | What it does | Output |
+|---|---|---|---|
+| [`code/utils.py`](code/utils.py) | — | Shared functions: `build_panel`, `build_waiver_stateyears`, `ols_cluster` (OLS with CR1 cluster-robust SEs), interpolation and merge helpers. Defines repo-relative paths. | (imported) |
+| [`code/00_build.py`](code/00_build.py) | `data/raw/*.csv` | Reshapes KFF enrollment wide→long, builds the ACS poverty denominator, maps NCSL composition snapshots to months, merges governor / opinion / expansion / waiver fields. Prints before/after row counts at every merge. | `data/processed/medicaid_panel.csv` (4,118 state-months); `data/processed/waiver_stateyears.csv` (226 expansion state-years) |
+| [`code/01_analysis.py`](code/01_analysis.py) | `data/processed/medicaid_panel.csv` | Two-way fixed-effects regressions (state + year FE, state-clustered SEs): full sample, excl-COVID, within-party split, two placebos, static-denominator robustness. | Console tables (paper Table 2; data behind Figs 1 and 4) |
+| [`code/02_extensions.py`](code/02_extensions.py) | `data/processed/waiver_stateyears.csv` | Tests whether majority size predicts restriction beyond direction: depth-3 decision tree, leave-one-state-out cross-validation, L1 (Lasso) logit, drop-Indiana refit, waiver-by-quartile gradient. | Console diagnostics (paper Results "the dial does not survive") |
+| [`code/03_make_figures.py`](code/03_make_figures.py) | `data/processed/waiver_stateyears.csv` | Builds the four manuscript figures (cross-validation figure computed live). | `output/fig_withinparty.png`, `fig_waiver_quartile.png`, `fig_crossval.png`, `fig_specforest.png` |
 
-| File | Source | Notes |
-|------|--------|-------|
-| `raw_data__2_.csv` | [KFF State Health Facts](https://www.kff.org/medicaid/state-indicator/total-medicaid-and-chip-enrollment/) | Monthly enrollment, Jan 2014–Jan 2026. Download → all states, monthly, CSV. |
-| `acs_eligible_pop.csv` | [data.census.gov](https://data.census.gov), table ACSDT1Y[YEAR].C17002 | Annual 1-year estimates 2014–2023; 5-year used for 2020 (Census suspended 1-year due to COVID). Eligible pop = Under .50 + .50–.99 + 1.00–1.24 + 0.54 × (1.25–1.49) buckets. |
-| `ncsl_lower.csv` / `ncsl_upper.csv` | [NCSL Partisan Composition Database](https://www.ncsl.org/elections-and-campaigns/partisan-composition) | Official NCSL figures, verified against historical records. 5 snapshots: Jan 2015, Mar 2017, Apr 2019, Feb 2021, Feb 2023. Nebraska excluded (unicameral nonpartisan). |
-| `expansion_dates.csv` | [KFF State Health Facts](https://www.kff.org/affordable-care-act/state-indicator/state-activity-around-expanding-medicaid-under-the-affordable-care-act/) | Expansion status and adoption dates. |
-| `presidential_vote.csv` | [MIT MEDSL](https://doi.org/10.7910/DVN/42MVDX); 2024 certified state returns | Democratic two-party vote share at presidential election years; interpolated linearly between elections in the pipeline. |
-| `governor_party.csv` | NCSL Partisan Composition Database | Governor party (1=D, 0=R) at each session snapshot. Independents coded 0. |
-| `restrictive_waivers.csv` | KFF Medicaid Work Requirements Tracker; CMS approval records | State-years with active approved restrictive waivers (work requirements, premiums, enrollment caps). Sparse format — only rows where waiver is active. |
-| `state_population.csv` | U.S. Census Bureau NST-EST2022-ALLDATA | Used as fallback denominator when ACS eligible pop is missing for a state-year. |
+## Data sources
 
----
+All nine files in `data/raw/` are derived from public sources and are included
+in the repo (≈136 KB total); no external download is required.
 
-## Key Variables
+| File | Source | Unit |
+|---|---|---|
+| `raw_data__2_.csv` | Kaiser Family Foundation State Health Facts — monthly Medicaid & CHIP enrollment, Jan 2014–Jan 2026 | state × month (wide) |
+| `acs_eligible_pop.csv` | U.S. Census ACS 1-year estimates, table C17002 (<138% FPL population), 2014–2023 | state × year |
+| `ncsl_lower.csv`, `ncsl_upper.csv` | NCSL Partisan Composition Database (5 election-year snapshots) | state × session |
+| `governor_party.csv` | governor party by state and NCSL session | state × session |
+| `presidential_vote.csv` | two-party Democratic presidential vote share, 2012–2024 (opinion proxy) | state × election |
+| `expansion_dates.csv` | KFF — Medicaid expansion status and adoption date | state |
+| `restrictive_waivers.csv` | approved restrictive Section 1115 waivers (work requirements / premiums / caps) | state × year |
+| `state_population.csv` | state list / 2022 population | state |
 
-**Outcome:** `enroll_rate` — Medicaid/CHIP enrollment as % of annual ACS population below 138% FPL. Rates exceed 100% because total enrollment includes children (CHIP), elderly, and disabled populations beyond the ACA expansion pool.
+## Notes
 
-**Key independent variable:** `margin` — Democratic lower chamber seat share minus 0.5. Positive = Democratic majority; negative = Republican majority.
-
-**Panel structure:** State × month, 4,118 observations, 49 states (Nebraska excluded). NCSL session coverage begins January 2015; January–December 2014 enrollment data excluded.
-
-**Session assignment:** Each NCSL snapshot is matched to enrollment months from the following November election through the subsequent October.
-
----
-
-## Replication Notes
-
-- The `load_eligible_population()` function automatically detects whether `acs_eligible_pop.csv` is multi-year (preferred) or single-year (fallback) format and handles both.
-- Regressions use `statsmodels` OLS with state and year dummy variables and clustered standard errors. The `linearmodels` package is not required.
-- The panel cache (`output/panel_cache.parquet`) speeds up repeated runs. Delete it to force a full rebuild from source files.
-- 133 state-month observations use `state_population.csv` as the denominator fallback (states with missing ACS coverage in a given year). These are flagged in the build log.
-
----
-
-## Dependencies
-
-```bash
-pip install pandas numpy matplotlib scipy statsmodels openpyxl pyarrow
-```
-
-Python 3.9+ required.
-
----
-
-## Paper
-
-The compiled paper (`output/floman_medicaid_margin.pdf`) can be recompiled from source on any machine with LaTeX installed:
-
-```bash
-cd output
-pdflatex floman_medicaid_margin.tex
-bibtex floman_medicaid_margin
-pdflatex floman_medicaid_margin.tex
-pdflatex floman_medicaid_margin.tex
-```
-
-Or upload `floman_medicaid_margin.tex`, `references.bib`, and all `fig*.png` files to [Overleaf](https://www.overleaf.com) for browser-based compilation.
-
----
-
-## Citation
-
-Floman, Ben. 2026. "Legislative Majority Size and Medicaid Enrollment: Evidence from a State Panel, 2015–2026." QSS 20 Final Paper, Dartmouth College.
+- **Standard errors / OLS.** The estimates use a direct numpy implementation of
+  OLS with CR1 cluster-robust standard errors (`ols_cluster` in `utils.py`),
+  clustered by state. This avoids a heavy dependency and matches an
+  `smf.ols(..., cov_type="cluster")` specification.
+- **Opinion control.** `00_build.py` uses the two-party presidential-vote share
+  as the `mood` proxy. Swap in another state-ideology series under the same
+  column name if preferred; results are not sensitive to the choice.
+- **NCSL coverage.** No 2025 composition snapshot exists, so the 2023 snapshot
+  governs 2023–2026 (`NCSL_COVERAGE` in `utils.py`).
