@@ -1,0 +1,196 @@
+\documentclass[9pt,twoside]{pnas-new}
+
+\articletype{Social Sciences}
+\templatetype{pnasmathematics}
+
+\usepackage[section]{placeins}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.10}
+\renewcommand{\floatpagefraction}{0.80}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
+\setlength{\floatsep}{5pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
+\setlength{\intextsep}{5pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{6pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{3pt}
+\setlength{\belowcaptionskip}{0pt}
+\captionsetup{skip=3pt}
+
+\begin{document}
+
+\title{Direction Without Degree: Party Control, Majority Size, and Medicaid Restriction in a State Panel, 2015--2026}
+
+\author[a,1]{Ben Floman}
+\affil[a]{Quantitative Social Science, Dartmouth College, Hanover, NH 03755}
+\leadauthor{Floman}
+
+\significancestatement{Whether a state runs its safety-net programs generously is usually explained by which party controls the legislature. A natural next question is whether the \emph{size} of that majority matters too---whether a 70-percent majority governs differently from a bare one. Using a complete monthly panel of 49 states from 2015 to 2026, in which eight legislative chambers change party control, this paper finds that for Medicaid restriction it does not: partisan influence operates as a switch, not a dial. Which party controls the chamber predicts whether a state attaches restrictive Medicaid waivers---Democratic-controlled expansion states never do---but among the states that use the tool, larger majorities do not use it more. A model that predicts restriction from majority size fits the states it is trained on yet predicts none out of sample; penalized selection discards size and keeps party control; and the apparent gradient rests on a single state. With genuine within-state variation to work with, the data detect no effect of majority size: for this policy, holding the majority is what matters, not how large it is.}
+
+\authorcontributions{B.F.\ designed the study, assembled the data, performed the analysis, and wrote the paper.}
+\authordeclaration{The author declares no competing interests.}
+\correspondingauthor{\textsuperscript{1}E-mail: ben.floman.28@dartmouth.edu}
+
+\begin{abstract}
+Accounts of state policy usually treat legislative control as binary---which party holds the majority. Veto-player theory suggests the \emph{size} of that majority should matter too, and continuously: larger majorities, more unilateral capacity. This paper tests that prediction against an alternative---that partisan influence operates as a threshold rather than a gradient---using a complete monthly panel of 49 states from 2015 through 2026, in which eight lower chambers change party control, and two outcomes: the breadth of Medicaid enrollment relative to the low-income population, and the use of restrictive Section 1115 waivers (work requirements, premiums, enrollment caps). The threshold account fits: the behavior is a switch, not a dial. Restrictive waivers are a partisan instrument that no Democratic-controlled expansion state imposes, but among the states that use the tool, majority size does not modulate use. With genuine within-state variation in seat margin, no specification yields a significant size effect on enrollment, and the within-party slopes are insignificant and opposite in sign. On the cleaner restriction outcome, a classifier predicting restriction from seat margin attains an in-sample F1 of 0.48 but a leave-one-state-out F1 of 0.00; an $L_1$-penalized model discards margin and keeps party control; and the apparent quartile gradient reverses when a single persistent state (Indiana) is removed. A placebo association on the enrollment outcome cautions against leaning on it, so inference rests on restriction. The result is consistent with a threshold and inconsistent with a detectable continuous gradient: for Medicaid restriction, holding the majority is what matters, not its size.
+\end{abstract}
+
+\dates{This manuscript was compiled on \today}
+\doi{\url{https://www.pnas.org/cgi/doi/10.1073/pnas.XXXXXXXXXX}}
+
+\maketitle
+\thispagestyle{firststyle}
+\ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
+
+\Firstpage
+
+\dropcap{T}he standard model of partisan politics treats legislative control as binary: a party either holds a majority or it does not. That framing arguably misses something. A party with 51 percent of lower-chamber seats and one with 70 percent both have a majority, but they operate under different coalition dynamics---a narrow majority can be paralyzed by a handful of defectors, while a dominant one absorbs them. Majority \emph{size} may carry information that the binary indicator of direction cannot. This paper tests that idea in the setting of Medicaid implementation and finds the opposite: partisan influence on Medicaid restriction operates as a switch, not a dial. Which party controls the chamber governs whether a state restricts; how large the majority is does not.
+
+Medicaid is a useful setting because implementation runs in two directions. The Affordable Care Act let states expand eligibility in 2014; afterward a state can ease enrollment through outreach and lenient renewals, or tighten it through work requirements, premiums, and enrollment caps. Rocco et al.\ \cite{rocco2020} establish that partisan \emph{control} is the dominant predictor of expansion adoption. The narrower question here is whether, conditional on direction, the \emph{size} of a majority is associated with how a state implements the program afterward.
+
+The theoretical motivation is Tsebelis's veto-player theory \cite{tsebelis2002}: larger majorities have fewer effective internal veto players, enabling more unilateral action---continuously in seat share, not merely at a 50-percent threshold. This predicts a \emph{dial}: restriction should rise with the size of the controlling majority. The competing hypothesis is a \emph{switch}: applying for or declining a restrictive waiver is a discrete act that turns on whether a party controls the chamber, and once it does, additional seats add little marginal capacity for that particular action. The paper adjudicates between these forms and finds for the switch: with a complete panel that contains real within-state variation in majority size---eight lower chambers change party control over the decade---no specification turns up a size effect that survives out-of-sample testing, while party control cleanly predicts whether a state restricts.
+
+\section*{Theoretical Background}
+
+Tsebelis \cite{tsebelis2002} shows that the scope for policy change shrinks as the number of effective veto players grows, and within a chamber majority size sets that number. Taken at face value this implies a dial: a larger majority faces fewer internal veto points and can act more aggressively, so restriction should scale with seat share. But the prediction depends on the policy being the kind of thing extra seats help with. Medicaid restriction may not be. Applying for a Section 1115 waiver---or declining to---is a discrete executive-and-legislative action: it requires a party to control the agenda and the relevant committees, but once it does, a bare majority and a supermajority can file the same application. Nor does a larger majority obviously buy more aggressive restriction: how far a waiver can go---whether it can layer work requirements, premiums, and enrollment caps at once---is bounded by federal approval and state administrative capacity rather than by seat count, so the marginal seat adds little. On this account the binding constraint is \emph{holding} the majority, not its size, and the relationship is a switch. The two accounts make different empirical predictions---a continuous margin gradient under the dial, a flat within-party relationship with a discontinuity at control under the switch---and the rest of the paper tests between them.
+
+A second asymmetry sharpens the switch reading. Restriction is a one-sided instrument: a Republican majority can pursue work requirements, premiums, and enrollment caps, as in Idaho and Utah \cite{jarlenski2020}, while the platform of the expanding party forecloses them, so Democratic-controlled states sit at zero by construction. Stimson et al.\ \cite{stimson1995} supply a complementary median-shift channel; Gilens and Page \cite{gilenspage2014} caution that elite preferences can override the median voter, and the citizen-ideology control is meant to separate caucus-internal capacity from statewide opinion, if imperfectly. The paper extends the binary baseline of Rocco et al.\ \cite{rocco2020}---control predicts adoption---from the discrete question of whether a state restricts to the continuous question of whether, among those that do, larger majorities restrict more.
+
+\section*{Data}
+
+\textbf{Sources.} The analysis combines four public sources. Monthly Medicaid and CHIP enrollment comes from the Kaiser Family Foundation's (KFF) State Health Facts, January 2014--January 2026. The poverty denominator comes from U.S.\ Census Bureau ACS 1-year estimates, table C17002, 2014--2023. Lower- and upper-chamber partisan composition comes from the NCSL Partisan Composition Database. Statewide opinion is a citizen-ideology measure in the Berry et al.\ tradition \cite{berry1998}. Restrictive-waiver status is coded from the public record of approved Section 1115 demonstrations.
+
+\textbf{Outcomes.} The first outcome is total Medicaid and CHIP enrollment divided by the state population below 138 percent of the federal poverty line, times 100. I call it the enrollment ratio; it is a coverage-breadth index, not a literal take-up rate. The numerator includes CHIP children, the elderly and disabled, and pregnant women, many outside the sub-138\% denominator, so the ratio exceeds 100 percent for most states (mean 129.5). Because the numerator is broad, the within-state movement the model identifies is not cleanly the legislative channel---state-specific shocks such as unemployment move enrollment, and year effects remove only their national component. I therefore treat the enrollment regression as corroboration, not as a clean estimate of a legislative effect. The second outcome---the one the design can actually resolve---is a binary indicator for whether an expansion state-year carries an active restrictive waiver (work requirements, premiums, or enrollment caps).
+
+\textbf{Key regressor.} \emph{Dem.\ Seat Margin} is the Democratic share of lower-chamber seats minus 0.5; positive values indicate a Democratic majority. A binary \emph{Dem.\ Control} indicator captures direction.
+
+\textbf{Limitations and missingness.} The 2020 ACS 1-year file was suspended, so 2020 uses the ACS 5-year estimate; ACS ends in 2023, so 2024--2026 denominators are forward-filled (a static-denominator check confirms this does not drive results). NCSL composition is observed at five biennial snapshots; across them, eight lower chambers change party control and many others shift seat margin without crossing the threshold, so the key regressor carries genuine within-state variation. Non-numeric enrollment cells in the raw KFF file are dropped. Table~\ref{tab:desc} reports summary statistics.
+
+\section*{Methods}
+
+\textbf{Panel specification.} The primary model is a two-way fixed-effects regression estimated by OLS with state-clustered standard errors:
+\[
+\mathrm{Ratio}_{it}=\alpha+\beta_1\mathrm{Margin}_{it}+\beta_2\mathrm{DemCtrl}_{it}+\beta_3\mathrm{PostExp}_{it}+\beta_4\mathrm{Mood}_{it}+\gamma_i+\delta_t+\varepsilon_{it},
+\]
+where $i$ indexes states and $t$ months. State fixed effects $\gamma_i$ absorb time-invariant cross-state differences; year fixed effects $\delta_t$ absorb common annual shocks. The COVID-19 continuous-enrollment period (March 2020--April 2023) is flagged with a binary indicator and excluded in robustness checks. Errors are clustered by state. The panel drops 2014, Nebraska (unicameral), and DC, leaving 6{,}515 state-months across 49 states.
+
+\textbf{Identification.} This is an inferential, not a clean causal, design. With state fixed effects, $\beta_1$ is identified from within-state movement in seat margin. Over the panel, eight lower chambers change party control and many more shift margin without flipping, so---unlike a thinner or truncated panel---the regressor carries real identifying variation, and a null on size is a finding rather than an artifact of missing movement. The analysis asks what that variation reveals about \emph{size}, and treats the binary restriction outcome---where the substantive claim is sharpest, and where the enrollment ratio's measurement problems do not bite---as the primary test.
+
+\textbf{Restriction as a classification problem.} Because the substantive claim about size is sharpest for restrictive waivers, and because the waiver outcome is binary, I treat it as a supervised classification target. I fit an interpretable depth-3 decision tree predicting restriction from \{seat margin, control, governor party\}, and---critically---evaluate it under \emph{leave-one-state-out} cross-validation. Grouping the folds by state, rather than by random row, is the correct evaluation for serially correlated panel data: a naive split would train on a state's 2018 to predict its 2019 and report inflated performance. Leave-one-state-out asks the question that matters for a \emph{generalizable} size effect---can the model predict a held-out state's restriction from the other states' margins? I complement the tree with an $L_1$-penalized (Lasso) logistic regression, which both performs variable selection between direction and size and converges under the perfect class separation that prevents an ordinary logit from fitting.
+
+\textbf{Placebos.} Placebo A restricts to non-expansion state-months (no expansion population to restrict); Placebo B restricts to pre-expansion months for late expanders. Both reuse the two-way FE specification.
+
+\begin{table}[htbp]
+\centering
+\caption{Descriptive statistics for the analysis sample}
+\label{tab:desc}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Variable & $N$ & Mean & SD & Min & Max\\
+\midrule
+Enrollment ratio (\% of $<$138\% FPL) & 6{,}515 & 129.5 & 38.4 & 58.6 & 237.3\\
+Dem.\ Seat Margin & 6{,}515 & $-0.05$ & 0.19 & $-0.42$ & 0.42\\
+Dem.\ Control (0/1) & 6{,}515 & 0.38 & 0.48 & 0 & 1\\
+Post-Expansion (0/1) & 6{,}515 & 0.70 & 0.46 & 0 & 1\\
+Citizen ideology (mood) & 6{,}515 & 0.46 & 0.10 & 0.22 & 0.66\\
+COVID Period (0/1) & 6{,}515 & 0.29 & 0.45 & 0 & 1\\
+\bottomrule
+\end{tabular}
+\addtabletext{Panel covers January 2015--January 2026; Nebraska and DC excluded. The enrollment ratio exceeds 100\% by construction (see Data).}
+\end{table}
+
+\section*{Results}
+
+\textbf{The switch: control governs restriction.} The behavior the theory is really about is whether a state restricts, and there party control is decisive (Fig.~\ref{fig:quartile}). No Democratic-controlled expansion state has ever imposed a restrictive waiver; restriction appears only under Republican control. This separation is partly definitional---restriction is a Republican instrument---but it establishes the switch: crossing from Democratic to Republican control turns the behavior on, with Democratic states pinned at zero by platform. The open question is what happens \emph{past} that threshold---among the states that use the tool, does a larger majority use it more (the dial), or does holding control exhaust the relationship (the switch)?
+
+\begin{SCfigure*}[\sidecaptionrelwidth][htbp]
+\centering
+\includegraphics[width=0.60\linewidth]{fig_waiver_quartile.png}
+\caption{Restrictive-waiver prevalence by Democratic seat-margin quartile, expansion states; whiskers are 95\% CIs. The zero floor in the Democratic quartiles reflects the instrument's partisan nature. The within-Republican Q1$>$Q2 gap reverses when Indiana is removed (marker), showing the gradient rests on one state.}
+\label{fig:quartile}
+\end{SCfigure*}
+
+\textbf{No size effect on enrollment.} If majority size scaled coverage, the continuous seat margin would predict the enrollment ratio. With the complete panel, it does not. In the full sample the margin coefficient is $+30.7$ points per unit of share but not significant (SE $=19.7$, $p=0.12$; $+38.9$, $p=0.09$ excluding COVID), and the control indicator is likewise insignificant (Table~\ref{tab:panel}). No specification---full, expansion-only, or COVID-excluded---produces a significant size effect (Fig.~\ref{fig:specforest}). (An earlier, incomplete extract of the composition data had yielded a large, significant coefficient here; it did not survive completing the panel, a point I return to in the Discussion.)
+
+\begin{table}[htbp]
+\centering
+\caption{Two-way fixed-effects estimates and placebo samples}
+\label{tab:panel}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+& \multicolumn{2}{c}{Main} & \multicolumn{2}{c}{Placebo}\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+& (1) Full & (2) Excl.\ COVID & (A) Non-exp. & (B) Pre-exp.\\
+\midrule
+Dem.\ Seat Margin & 30.74 & 38.93 & 29.63 & $40.47^{*}$\\
+ & (19.65) & (22.28) & (33.40) & (16.62)\\
+Dem.\ Control & $-3.53$ & $-4.72$ & --- & ---\\
+ & (2.73) & (3.86) & & \\
+$p$-value (margin) & 0.119 & 0.087 & 0.376 & 0.015\\
+State FE / Year FE & Yes & Yes & Yes & Yes\\
+$N$ & 6{,}515 & 4{,}653 & 1{,}330 & 599\\
+\bottomrule
+\end{tabular}
+\addtabletext{Outcome: enrollment ratio. State-clustered SEs in parentheses. $^{*}p<0.05$. No main specification yields a significant size effect. Placebo B is nominally significant but rests on nine clusters, where cluster-robust inference over-rejects---a reason to treat enrollment as unreliable and base inference on restriction.}
+\end{table}
+
+\textbf{Size predicts nothing that generalizes.} Three tests, any of which could have surfaced a size effect, return none. First, splitting the enrollment slope by who controls the chamber (Fig.~\ref{fig:withinparty}), the margin coefficient is $+41.8$ (SE $=30.1$) under Republican control and $-26.3$ (SE $=49.6$) under Democratic control---opposite in sign, neither significant, and not distinguishable from each other; within expansion states margin and control still correlate at $r=0.84$, so what continuous signal exists cannot be cleanly separated from direction. Second, the restriction gradient that would be the cleanest dial is one state: prevalence is 14.7\% in the most-Republican margin quartile against 10.6\% in the next (Fig.~\ref{fig:quartile}), a gap that is not significant even treating state-years as independent ($z=0.86$, $p=0.39$), and it comes from three states (Indiana, Arkansas, Kentucky)---dropping Indiana, whose Healthy Indiana Plan ran across the entire window, lowers Q1 to 4.8\%, \emph{below} Q2. Indiana's case is structural rather than margin-driven: its waiver is a long-standing premium-assistance and POWER-account demonstration in place throughout the study window, so its persistent restriction status reflects an entrenched program, not the size of a Republican majority. Third, the pattern does not generalize: a depth-3 decision tree predicting restriction from seat margin scores an in-sample F1 of 0.48 but a leave-one-state-out F1 of \emph{0.00} (Fig.~\ref{fig:crossval})---it predicts not one restriction in a held-out state---while an $L_1$-penalized logit shrinks margin to exactly zero and keeps only party control ($-1.20$) and Democratic governor ($-1.39$). Offered the choice, every test keeps direction and discards size.
+
+\begin{SCfigure*}[\sidecaptionrelwidth][htbp]
+\centering
+\includegraphics[width=0.60\linewidth]{fig_withinparty.png}
+\caption{Within-party margin slope on the enrollment ratio, expansion state-months. Two-way FE coefficient on Democratic seat margin, estimated separately within Republican- and Democratic-controlled chambers; bars are 95\% CIs. The two slopes are opposite in sign, neither significant, and not distinguishable from each other.}
+\label{fig:withinparty}
+\end{SCfigure*}
+
+\begin{SCfigure*}[\sidecaptionrelwidth][htbp]
+\centering
+\includegraphics[width=0.60\linewidth]{fig_crossval.png}
+\caption{Predicting restriction from seat margin. A depth-3 decision tree fits the training states (in-sample F1 $=0.48$) but predicts no restriction in held-out states under leave-one-state-out cross-validation (F1 $=0.00$). Majority size does not generalize as a predictor of restriction.}
+\label{fig:crossval}
+\end{SCfigure*}
+
+\textbf{Placebos.} Placebo A, restricted to non-expansion state-months where there is no expansion population to restrict, is null (29.6 pp, $p=0.38$). Placebo B, restricted to pre-expansion months of late expanders, is nominally significant (40.5 pp, $p=0.015$)---but it rests on only nine clusters, where cluster-robust inference badly over-rejects. Read literally it is a warning rather than a result: the enrollment outcome carries an association it should not, which is the main reason inference here rests on restriction rather than enrollment (Fig.~\ref{fig:specforest}).
+
+\begin{SCfigure*}[\sidecaptionrelwidth][htbp]
+\centering
+\includegraphics[width=0.60\linewidth]{fig_specforest.png}
+\caption{Seat-margin estimates across main specifications (blue) and placebo samples (gray). Two-way FE, state-clustered SEs; bars are 95\% CIs. No main specification is significant; a placebo is, indicating the enrollment outcome is unreliable and that inference should rest on restriction.}
+\label{fig:specforest}
+\end{SCfigure*}
+
+\section*{Discussion}
+
+Across a complete decade-long panel, partisan influence on Medicaid restriction takes the form of a switch rather than a dial. Which party controls the chamber governs whether a state restricts: Democratic-controlled expansion states sit at zero, and restriction appears only under Republican control. The size of the majority does not matter. Crucially, this is not a statement about missing variation: eight lower chambers change party control over the panel and many more shift seat margin without flipping, so the regressor has real within-state movement to be estimated from. With that variation in hand, no specification produces a significant size effect on enrollment, the within-party slopes are insignificant and opposite in sign, and on the restriction outcome a model built from seat margin predicts no held-out state, is discarded by penalized selection in favor of party control, and rests on a single state. Direction, not degree, is what the data carry.
+
+Three caveats bound the reading. First, the enrollment outcome is unreliable: it mixes a broad numerator with a narrow denominator, and a placebo association on it is nominally significant, so the conclusion rests on restriction rather than enrollment. Second, the categorical separation on restriction is partly definitional, since restriction is a Republican instrument; the substantive content is the absence of a within-party gradient, not the zero floor itself. Third, although eight control flips is real variation, it is spread over five biennial snapshots, so the panel can establish that no size effect is detectable but cannot finely trace the shape of restriction just past the control threshold. A methodological note is worth recording: an earlier, incomplete extract of the same composition data---missing later snapshots for many states---produced a positive, statistically significant size coefficient that vanished once the panel was completed. Institutional panels are only as trustworthy as the completeness of the institutional variable, and a coefficient that looks like a dial can be an artifact of which state-years happen to be observed. The practical implication is direct: for anticipating Medicaid restriction, the legislative variable that matters is which party holds the chamber, not by how much.
+
+\section*{Agentic Analysis}
+
+I used Claude (Anthropic) throughout for code scaffolding, data processing, figure generation, design pressure-testing, and prose editing, in an iterative chat-plus-execution loop; representative transcripts are in the replication repository. The workflow itself was part of the exercise, and the most important lesson concerns scope and skepticism rather than speed.
+
+The project's claim narrowed three times, each time after checking the model's output against the data rather than accepting the cleaner story. An initial framing of ``larger Democratic majorities cover more'' did not survive the observation that the only directly measured mechanism, restrictive waivers, sits entirely on the Republican side. A revised ``Democratic floor'' framing did not survive re-running the within-party split, which showed the Democratic slope to be positive and merely imprecise rather than a true floor. And the surviving ``Republican restriction gradient'' did not survive the leave-one-state-out cross-validation reported here, which reduced it to a single state. In each case the assistant's default was to state the stronger version; each correction came from a numerical check. The assistant also accelerated genuinely useful moves---the state-clustered errors, the placebo samples, and the cross-validation framing of the restriction test---and proposed several extensions (a close-election instrument, an initiative-state design, post-double-selection Lasso) that were correctly relegated to future work rather than allowed to expand a course-scale panel study beyond what its data could support.
+
+The largest correction came last, and from the data rather than the prose. An earlier draft leaned on a striking limitation---that only one chamber (Minnesota) changed party control across the panel, leaving the design nearly unable to identify a size effect. That ``one flip'' was an artifact of an incomplete extract of the composition data, which was missing the later snapshots for many states. Completing the table revealed eight control flips and far more within-state variation, and it overturned the earlier framing: a study that had read as an underpowered null became an identified one, and a size coefficient that had been positive and significant fell to insignificance. The error had been stated confidently and accepted on both sides; it surfaced only when the convenient summary statistic was interrogated against the source. The central discipline, in the end, was subtraction: fixing one claim the data could carry, declining every elaboration that did not serve it, and trusting numbers only after checking where they came from.
+
+\matmethods{All data derive from public sources: KFF State Health Facts, the NCSL Partisan Composition Database, the U.S.\ Census ACS table C17002, and state election returns. Replication code, processed data, and AI transcripts are available at \url{https://github.com/bfloman/QSS20-Final}. The restriction classifier is a depth-3 CART (scikit-learn) evaluated under leave-one-group-out cross-validation with states as groups; the $L_1$ logistic regression uses liblinear with $C=1$.}
+
+\showmatmethods
+
+\begin{thebibliography}{9}
+\bibitem{rocco2020} P Rocco, AC Keller, AS Kelly, State politics and the uneven fate of Medicaid expansion. \emph{Health Aff.} 39, 494--501 (2020).
+\bibitem{tsebelis2002} G Tsebelis, \emph{Veto Players: How Political Institutions Work} (Princeton Univ.\ Press, 2002).
+\bibitem{jarlenski2020} M Jarlenski, et al., Medicaid and state politics beyond COVID. \emph{J. Gen. Intern. Med.} 35, 3401--3404 (2020).
+\bibitem{stimson1995} JA Stimson, MB MacKuen, RS Erikson, Dynamic representation. \emph{Am. Polit. Sci. Rev.} 89, 543--565 (1995).
+\bibitem{gilenspage2014} M Gilens, BI Page, Testing theories of American politics. \emph{Perspect. Polit.} 12, 564--581 (2014).
+\bibitem{berry1998} WD Berry, EJ Ringquist, RC Fording, RL Hanson, Measuring citizen and government ideology in the American states. \emph{Am. J. Polit. Sci.} 42, 327--348 (1998).
+\end{thebibliography}
+
+\end{document}
